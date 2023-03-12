@@ -2,7 +2,7 @@
 
 use The3LabsTeam\AdsPostParser\AdsPostParser;
 
-$content = <<<HTML
+$content = <<<'HTML'
 <p>Paragraph</p>
 <p>Paragraph</p>
 <p>Paragraph</p>

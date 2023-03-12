@@ -8,9 +8,13 @@ use voku\helper\SimpleHtmlDomNode;
 class AdsPostParser
 {
     public string $content;
+
     public SimpleHtmlDomNode $paragraphs;
+
     public int $numberOfParagraphs;
+
     public int $numberOfAds;
+
     public string $blacklist;
 
     public function __construct(string $content)
@@ -33,8 +37,6 @@ class AdsPostParser
 
     /**
      * Calculate the number of paragraphs in the content
-     *
-     * @return int
      */
     public function calculateParagraphs(): int
     {
@@ -44,13 +46,12 @@ class AdsPostParser
             }
         }
         $this->numberOfParagraphs = count($this->paragraphs);
+
         return $this->numberOfParagraphs;
     }
 
     /**
      * Calculate the number of ads to render
-     *
-     * @return int
      */
     public function calculateNumberOfAds(): int
     {
@@ -61,9 +62,9 @@ class AdsPostParser
                 $numberOfAds = $ads;
             }
         }
+
         return $numberOfAds;
     }
-
 
     public function appendAds(array $adCodes): string
     {
@@ -104,7 +105,4 @@ class AdsPostParser
 
         return $ads;
     }
-
-
-
 }
