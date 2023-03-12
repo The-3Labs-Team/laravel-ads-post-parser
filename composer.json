@@ -1,24 +1,26 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "the-3labs-team/laravel-ads-post-parser",
+    "description": "This is my package laravel-ads-post-parser",
     "keywords": [
-        ":vendor_name",
+        "The-3Labs-Team",
         "laravel",
-        ":package_slug"
+        "laravel-ads-post-parser"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/the-3labs-team/laravel-ads-post-parser",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Stefano Novelli",
+            "email": "murdercode@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.1",
+        "illuminate/contracts": "^10.0",
         "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^10.0"
+        "voku/portable-utf8": "^6.0",
+        "voku/simple_html_dom": "^4.8"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -30,18 +32,17 @@
         "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "spatie/laravel-ray": "^1.26"
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "The3LabsTeam\\AdsPostParser\\": "src",
+            "The3LabsTeam\\AdsPostParser\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "The3LabsTeam\\AdsPostParser\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -61,10 +62,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "The3LabsTeam\\AdsPostParser\\AdsPostParserServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "AdsPostParser": "The3LabsTeam\\AdsPostParser\\Facades\\AdsPostParser"
             }
         }
     },
