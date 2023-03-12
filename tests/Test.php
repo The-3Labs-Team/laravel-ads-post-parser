@@ -2,31 +2,43 @@
 
 use The3LabsTeam\AdsPostParser\AdsPostParser;
 
-$content = <<<'HTML'
-<p>Paragraph</p>
-<p>Paragraph</p>
-<p>Paragraph</p>
-<img src="https://example.com/image.jpg" alt="Image">
-<p>Paragraph</p>
-<div><p>Paragraph</p></div>
-<div><p>[shortcode]</p></div>
-<p>Paragraph</p>
-<p><img src="https://example.com/image.jpg" alt="Image"></p>
 
-HTML;
+beforeEach(function () {
+    $this->content = <<<'HTML'
+    <p>Paragraph1</p>
+    <p>Paragraph2</p>
+    <p>Paragraph3</p>
+    <img src="https://example.com/image.jpg" alt="Image">
+    <p>Paragraph4</p>
+    <div><p>Paragraph5</p></div>
+    <div><p>[shortcode]</p></div>
+    <p>Paragraph6</p>
+    <p><img src="https://example.com/image.jpg" alt="Image"></p>
+    <p>Paragraph7</p>
+    <p>Paragraph8</p>
+    <p>Paragraph9</p>
+    <p>Paragraph10</p>
+    <p>Paragraph11</p>
+    <p>Paragraph12</p>
+    HTML;
+    });
 
-it('can calculate the number of paragraphs', function () use ($content) {
-    $parser = new AdsPostParser($content);
-    expect($parser->numberOfParagraphs)->toBe(6);
+it('can append advertising', function () {
+    $content = (new AdsPostParser($this->content))->appendAdvertising();
+    echo $content;
+
+    expect($content)->toContain('YOUR AD1 HERE');
+    expect($content)->toContain('YOUR AD2 HERE');
+    expect($content)->toContain('YOUR AD3 HERE');
+    expect($content)->toContain('YOUR AD4 HERE');
 });
 
-it('can calculate the number of ads to render', function () use ($content) {
-    $parser = new AdsPostParser($content);
-    expect($parser->calculateNumberOfAds())->toBe(1);
+it('can append single advertising', function () {
+    $content = (new AdsPostParser($this->content))->appendSingleAdvertising(2, 1);
+    expect($content)->toContain('YOUR AD1 HERE');
 });
 
-it(' can append the ads to the content', function () use ($content) {
-    $parser = new AdsPostParser($content);
-    $parser->appendAds(['<p>Ad</p>']);
-    expect($parser->content)->toContain('<p>Ad</p>');
+it('can remove wrapping div', function () {
+    $content = (new AdsPostParser($this->content))->appendAdvertising()->removeWrappingDiv();
+    expect($content)->not()->toContain('<div id="adv__parsed__content">');
 });

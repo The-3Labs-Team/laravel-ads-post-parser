@@ -2,107 +2,80 @@
 
 namespace The3LabsTeam\AdsPostParser;
 
+use Illuminate\Support\Facades\Blade;
 use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDomNode;
 
 class AdsPostParser
 {
-    public string $content;
-
-    public SimpleHtmlDomNode $paragraphs;
-
-    public int $numberOfParagraphs;
-
-    public int $numberOfAds;
-
     public string $blacklist;
+    public $dom;
+    public string $content;
 
     public function __construct(string $content)
     {
         $this->blacklist = config('ads-post-parser.blacklist');
+        $this->dom = HtmlDomParser::str_get_html("<div id='adv__parsed__content'>$content</div>");
         $this->content = $content;
-        $this->parse();
-        $this->numberOfParagraphs = $this->calculateParagraphs();
-        $this->numberOfAds = $this->calculateNumberOfAds();
     }
 
     /**
-     * Parse the content, find the paragraphs and store them in the object
+     * Append all the advertising
+     * @return string
      */
-    public function parse(): void
+    public function appendAdvertising(): string
     {
-        $dom = HtmlDomParser::str_get_html($this->content);
-        $this->paragraphs = $dom->find('p');
+        $thresholds = config('ads-post-parser.thresholds');
+
+        foreach ($thresholds as $advIndex => $threshold) {
+            $this->appendSingleAdvertising($threshold, $advIndex);
+        }
+
+        return $this->dom->save();
+
     }
 
     /**
-     * Calculate the number of paragraphs in the content
+     * Append a single advertising
+     * @param int $index
+     * @param int $advIndex
+     * @param int $maxLoop
+     * @return string
      */
-    public function calculateParagraphs(): int
+    public function appendSingleAdvertising(int $index, int $advIndex): string
     {
-        foreach ($this->paragraphs as $key => $paragraph) {
-            if (preg_match($this->blacklist, $paragraph->innertext)) {
-                unset($this->paragraphs[$key]);
-            }
-        }
-        $this->numberOfParagraphs = count($this->paragraphs);
+        $items = $this->dom->find('#adv__parsed__content > *');
+        $maxLoop = count($items);
 
-        return $this->numberOfParagraphs;
+        if ($index >= $maxLoop) {
+            return $this->dom->save();
+        }
+
+        $currentItem = $items[$index];
+        $nextItem = $items[$index + 1] ?? null;
+
+        if (
+            !preg_match($this->blacklist, $currentItem->outertext) &&
+            (!$nextItem || !preg_match($this->blacklist, $nextItem->outertext)) &&
+            (!$nextItem || preg_match('/<\w+/', $nextItem->outertext))
+        ) {
+            $currentItem->outertext .= Blade::render('ads-post-parser::ads' . $advIndex);
+        } else {
+            $this->appendSingleAdvertising($index + 1, $advIndex);
+        }
+
+        return $this->dom->save();
     }
 
     /**
-     * Calculate the number of ads to render
+     * Remove the wrapping div
+     * @return string
      */
-    public function calculateNumberOfAds(): int
+    public function removeWrappingDiv(): string
     {
-        $numberOfAds = 0;
-        $tresholds = config('ads-post-parser.tresholds');
-        foreach ($tresholds as $treshold => $ads) {
-            if ($this->numberOfParagraphs >= $treshold) {
-                $numberOfAds = $ads;
-            }
-        }
-
-        return $numberOfAds;
+        $this->dom = $this->dom->find('#adv__parsed__content', 0);
+        return $this->dom->save();
     }
 
-    public function appendAds(array $adCodes): string
-    {
-        $ads = '';
-        $adPosition = 1;
-        $paragraphIndex = 0;
-        foreach ($this->paragraphs as $paragraph) {
-            // Skip blacklisted paragraphs
-            if (preg_match($this->blacklist, $paragraph->innertext)) {
-                continue;
-            }
 
-            // Append an ad if the current paragraph is in the right position
-            if ($adPosition <= $this->numberOfAds) {
-                $adCode = $adCodes[$adPosition - 1];
-                $adParagraph = HtmlDomParser::str_get_html("<p>$adCode</p>");
-                $ads .= $adParagraph;
-                $adPosition++;
-            }
-
-            $ads .= $paragraph;
-            $paragraphIndex++;
-
-            // Stop adding ads if we reached the end of the content or added all the ads
-            if ($paragraphIndex >= $this->numberOfParagraphs || $adPosition > $this->numberOfAds) {
-                break;
-            }
-        }
-
-        // Append any remaining ads to the end of the content
-        if ($adPosition <= $this->numberOfAds) {
-            for ($i = $adPosition - 1; $i < $this->numberOfAds; $i++) {
-                $adCode = $adCodes[$i];
-                $adParagraph = HtmlDomParser::str_get_html("<p>$adCode</p>");
-                $ads .= $adParagraph;
-            }
-        }
-
-        return $ads;
-    }
 }

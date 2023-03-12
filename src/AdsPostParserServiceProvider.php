@@ -2,6 +2,7 @@
 
 namespace The3LabsTeam\AdsPostParser;
 
+use Illuminate\Support\Facades\Blade;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use The3LabsTeam\AdsPostParser\Commands\AdsPostParserCommand;
@@ -19,6 +20,7 @@ class AdsPostParserServiceProvider extends PackageServiceProvider
             ->name('laravel-ads-post-parser')
             ->hasConfigFile()
             ->hasViews()
+
             ->hasMigration('create_laravel-ads-post-parser_table')
             ->hasCommand(AdsPostParserCommand::class);
     }

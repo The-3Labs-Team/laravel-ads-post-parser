@@ -1,3 +1,1 @@
-<div>
-	Past here your ad code
-</div>
+<div>--- YOUR AD2 HERE ---</div>
