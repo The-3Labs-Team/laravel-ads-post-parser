@@ -2,7 +2,6 @@
 
 use The3LabsTeam\AdsPostParser\AdsPostParser;
 
-
 beforeEach(function () {
     $this->content = <<<'HTML'
     <p>Paragraph1</p>
@@ -21,7 +20,7 @@ beforeEach(function () {
     <p>Paragraph11</p>
     <p>Paragraph12</p>
     HTML;
-    });
+});
 
 it('can append advertising', function () {
     $content = (new AdsPostParser($this->content))->appendAdvertising();

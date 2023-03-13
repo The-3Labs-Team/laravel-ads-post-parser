@@ -4,12 +4,13 @@ namespace The3LabsTeam\AdsPostParser;
 
 use Illuminate\Support\Facades\Blade;
 use voku\helper\HtmlDomParser;
-use voku\helper\SimpleHtmlDomNode;
 
 class AdsPostParser
 {
     public string $blacklist;
+
     public $dom;
+
     public string $content;
 
     public function __construct(string $content)
@@ -21,7 +22,6 @@ class AdsPostParser
 
     /**
      * Append all the advertising
-     * @return string
      */
     public function appendAdvertising(): string
     {
@@ -32,15 +32,12 @@ class AdsPostParser
         }
 
         return $this->dom->save();
-
     }
 
     /**
      * Append a single advertising
-     * @param int $index
-     * @param int $advIndex
-     * @param int $maxLoop
-     * @return string
+     *
+     * @param  int  $maxLoop
      */
     public function appendSingleAdvertising(int $index, int $advIndex): string
     {
@@ -55,11 +52,11 @@ class AdsPostParser
         $nextItem = $items[$index + 1] ?? null;
 
         if (
-            !preg_match($this->blacklist, $currentItem->outertext) &&
-            (!$nextItem || !preg_match($this->blacklist, $nextItem->outertext)) &&
-            (!$nextItem || preg_match('/<\w+/', $nextItem->outertext))
+            ! preg_match($this->blacklist, $currentItem->outertext) &&
+            (! $nextItem || ! preg_match($this->blacklist, $nextItem->outertext)) &&
+            (! $nextItem || preg_match('/<\w+/', $nextItem->outertext))
         ) {
-            $currentItem->outertext .= Blade::render('ads-post-parser::ads' . $advIndex);
+            $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
         } else {
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
@@ -69,13 +66,11 @@ class AdsPostParser
 
     /**
      * Remove the wrapping div
-     * @return string
      */
     public function removeWrappingDiv(): string
     {
         $this->dom = $this->dom->find('#adv__parsed__content', 0);
+
         return $this->dom->save();
     }
-
-
 }
