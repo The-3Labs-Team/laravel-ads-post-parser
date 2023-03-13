@@ -1,27 +1,37 @@
-# This is my package laravel-ads-post-parser
+# Laravel ADS Post Parser
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/the-3labs-team/laravel-ads-post-parser.svg?style=flat-square)](https://packagist.org/packages/the-3labs-team/laravel-ads-post-parser)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/the-3labs-team/laravel-ads-post-parser/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/the-3labs-team/laravel-ads-post-parser/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/the-3labs-team/laravel-ads-post-parser/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/the-3labs-team/laravel-ads-post-parser/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/the-3labs-team/laravel-ads-post-parser.svg?style=flat-square)](https://packagist.org/packages/the-3labs-team/laravel-ads-post-parser)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+This package allows you to append advertising to your posts.
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-ads-post-parser.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-ads-post-parser)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+Main features:
+- Append advertising to your posts with a specific frequency
+- Can bypass advertising between no-paragrahps content
+- You can set thresholds to avoid breaking your post layout
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via composer.json:
 
 ```bash
-composer require the-3labs-team/laravel-ads-post-parser
+  "require": {
+    //..
+    "the-3labs-team/laravel-ads-post-parser": "dev-main",
+    }
+    
+    "repositories": {
+      //..
+        "the-3labs-team/laravel-ads-post-parser":
+        } {
+            "type": "vcs",
+            "url": "https://github.com/The-3Labs-Team/laravel-ads-post-parser.git"
+        }
 ```
+
+
 
 You can publish and run the migrations with:
 
@@ -36,14 +46,7 @@ You can publish the config file with:
 php artisan vendor:publish --tag="laravel-ads-post-parser-config"
 ```
 
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
+You can publish the views using
 
 ```bash
 php artisan vendor:publish --tag="laravel-ads-post-parser-views"
@@ -52,8 +55,7 @@ php artisan vendor:publish --tag="laravel-ads-post-parser-views"
 ## Usage
 
 ```php
-$adsPostParser = new The3LabsTeam\AdsPostParser();
-echo $adsPostParser->echoPhrase('Hello, The3LabsTeam!');
+$parsedContent = (new AdsPostParser($content))->appendAdvertising();
 ```
 
 ## Testing
