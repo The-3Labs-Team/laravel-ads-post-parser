@@ -16,6 +16,7 @@ return [
         2 => 3,
         3 => 9,
         4 => 12,
+        5 => 15,
     ],
     /**
      * Blacklist to avoid adding advertising in some elements
@@ -23,5 +24,5 @@ return [
      * Example:
      * '/\[shortcode|\[image|\[product|\[widget|\[twitter|\[facebook]|\[youtube|\[gallery|\[media|<img|<quote|<h1|<h2|<h3|<h4|<h5/'
      */
-    'blacklist' => '/\[shortcode|\[image|\[product|\[widget|\[twitter|\[facebook]|\[youtube|\[gallery|\[media|<img|<quote|<h1|<h2|<h3|<h4|<h5/',
+    'blacklist' => '/\[shortcode|\[image|\[product|\[widget|\[twitter|\[facebook|\[instagram|\[youtube|\[gallery|\[media|\[video|\[quiz|\[challenge|\[spotify|\[faq|\[movie|\[tv|\[spoiler|<img|<quote|<h1|<h2|<h3|<h4|<h5/',
 ];
