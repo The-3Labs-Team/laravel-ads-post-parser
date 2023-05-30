@@ -31,15 +31,6 @@ You can install the package via composer.json:
         }
 ```
 
-
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="laravel-ads-post-parser-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
