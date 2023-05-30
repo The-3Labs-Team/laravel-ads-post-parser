@@ -1,8 +1,9 @@
 # Laravel ADS Post Parser
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/the-3labs-team/laravel-ads-post-parser.svg?style=flat-square)](https://packagist.org/packages/the-3labs-team/laravel-ads-post-parser)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/the-3labs-team/laravel-ads-post-parser/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/the-3labs-team/laravel-ads-post-parser/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/the-3labs-team/laravel-ads-post-parser/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/the-3labs-team/laravel-ads-post-parser/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Fix PHP code style issues](https://github.com/The-3Labs-Team/laravel-ads-post-parser/actions/workflows/fix-php-code-style-issues.yml/badge.svg)](https://github.com/The-3Labs-Team/laravel-ads-post-parser/actions/workflows/fix-php-code-style-issues.yml)
+[![PHPStan](https://github.com/The-3Labs-Team/laravel-ads-post-parser/actions/workflows/phpstan.yml/badge.svg)](https://github.com/The-3Labs-Team/laravel-ads-post-parser/actions/workflows/phpstan.yml)
+[![run-tests](https://github.com/The-3Labs-Team/laravel-ads-post-parser/actions/workflows/run-tests.yml/badge.svg)](https://github.com/The-3Labs-Team/laravel-ads-post-parser/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/the-3labs-team/laravel-ads-post-parser.svg?style=flat-square)](https://packagist.org/packages/the-3labs-team/laravel-ads-post-parser)
 
 This package allows you to append advertising to your posts.
