@@ -24,7 +24,6 @@ beforeEach(function () {
 
 it('can append advertising', function () {
     $content = (new AdsPostParser($this->content))->appendAdvertising();
-    echo $content;
 
     expect($content)->toContain('YOUR AD1 HERE');
     expect($content)->toContain('YOUR AD2 HERE');
