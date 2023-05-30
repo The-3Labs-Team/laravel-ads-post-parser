@@ -13,6 +13,11 @@ class AdsPostParser
 
     public string $content;
 
+    /**
+     * AdsPostParser constructor.
+     * 
+     * @param string $content
+     */
     public function __construct(string $content)
     {
         $this->blacklist = config('ads-post-parser.blacklist');
@@ -22,22 +27,31 @@ class AdsPostParser
 
     /**
      * Append all the advertising
+     * 
+     * @return string
      */
     public function appendAdvertising(): string
     {
         $thresholds = config('ads-post-parser.thresholds');
 
         foreach ($thresholds as $advIndex => $threshold) {
-            $this->appendSingleAdvertising($threshold, $advIndex);
+            $this->appendSingleAdvertising(
+                (int) $threshold,
+                (int) $advIndex
+            );
         }
 
         return $this->dom->save();
     }
 
+    
     /**
      * Append a single advertising
      *
-     * @param  int  $maxLoop
+     * @param  int  $index
+     * @param  int  $advIndex
+     * 
+     * @return string
      */
     public function appendSingleAdvertising(int $index, int $advIndex): string
     {
@@ -51,6 +65,9 @@ class AdsPostParser
         $currentItem = $items[$index];
         $nextItem = $items[$index + 1] ?? null;
 
+        // If the current item is not blacklisted and the next item is not
+        // blacklisted and the next item is an HTML tag, then append the
+        // advertising code to the current item.
         if (
             ! preg_match($this->blacklist, $currentItem->outertext) &&
             (! $nextItem || ! preg_match($this->blacklist, $nextItem->outertext)) &&
@@ -58,19 +75,23 @@ class AdsPostParser
         ) {
             $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
         } else {
+            // Otherwise, append the advertising code to the next item.
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
 
         return $this->dom->save();
     }
 
-    /**
+     /**
      * Remove the wrapping div
+     * 
+     * @return string
      */
     public function removeWrappingDiv(): string
     {
-        $this->dom = $this->dom->find('#adv__parsed__content', 0);
+        $contentDiv = $this->dom->find('#adv__parsed__content', 0);
+        $html = $contentDiv->save();
 
-        return $this->dom->save();
+        return $html;
     }
 }
