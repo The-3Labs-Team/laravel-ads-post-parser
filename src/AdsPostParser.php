@@ -15,8 +15,6 @@ class AdsPostParser
 
     /**
      * AdsPostParser constructor.
-     * 
-     * @param string $content
      */
     public function __construct(string $content)
     {
@@ -27,8 +25,6 @@ class AdsPostParser
 
     /**
      * Append all the advertising
-     * 
-     * @return string
      */
     public function appendAdvertising(): string
     {
@@ -44,14 +40,8 @@ class AdsPostParser
         return $this->dom->save();
     }
 
-    
     /**
      * Append a single advertising
-     *
-     * @param  int  $index
-     * @param  int  $advIndex
-     * 
-     * @return string
      */
     public function appendSingleAdvertising(int $index, int $advIndex): string
     {
@@ -82,10 +72,8 @@ class AdsPostParser
         return $this->dom->save();
     }
 
-     /**
+    /**
      * Remove the wrapping div
-     * 
-     * @return string
      */
     public function removeWrappingDiv(): string
     {
