@@ -18,18 +18,7 @@ Main features:
 You can install the package via composer.json:
 
 ```bash
-  "require": {
-    //..
-    "the-3labs-team/laravel-ads-post-parser": "dev-main",
-    }
-    
-    "repositories": {
-      //..
-        "the-3labs-team/laravel-ads-post-parser":
-        } {
-            "type": "vcs",
-            "url": "https://github.com/The-3Labs-Team/laravel-ads-post-parser.git"
-        }
+composer require the-3labs-team/laravel-ads-post-parser
 ```
 
 You can publish the config file with:
