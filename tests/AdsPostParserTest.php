@@ -25,14 +25,16 @@ beforeEach(function () {
 it('can append advertising', function () {
     $content = (new AdsPostParser($this->content))->appendAdvertising();
 
-    expect($content)->toContain('YOUR AD1 HERE');
-    expect($content)->toContain('YOUR AD2 HERE');
-    expect($content)->toContain('YOUR AD3 HERE');
-    expect($content)->toContain('YOUR AD4 HERE');
+    expect($content)
+        ->toContain('YOUR AD1 HERE')
+        ->toContain('YOUR AD2 HERE')
+        ->toContain('YOUR AD3 HERE')
+        ->toContain('YOUR AD4 HERE');
 });
 
 it('can append single advertising', function () {
-    $content = (new AdsPostParser($this->content))->appendSingleAdvertising(2, 1);
+    $content = (new AdsPostParser($this->content))
+    ->appendSingleAdvertising(2, 1);
     expect($content)->toContain('YOUR AD1 HERE');
 });
 
