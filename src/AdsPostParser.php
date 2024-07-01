@@ -61,15 +61,15 @@ class AdsPostParser
 //            return $this->appendSingleAdvertising($index + 1, $advIndex);
 //        }
 
-        // Verifica se l'elemento precedente non è in blacklist
         if (
             ! preg_match($this->blacklist, $currentItem->outertext) &&
             (! $previousItem || ! preg_match($this->blacklist, $previousItem->outertext)) &&
             strip_tags($currentItem->outertext) !== ''
         ) {
             $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
-            $adIndices[] = $index;
-        } else {
+//            $adIndices[] = $index;
+        }
+        else {
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
 
