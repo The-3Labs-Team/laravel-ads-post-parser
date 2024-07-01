@@ -43,38 +43,31 @@ class AdsPostParser
     /**
      * Append a single advertising
      */
-public function appendSingleAdvertising(int $index, int $advIndex): string
-{
-    $items = $this->dom->find('#adv__parsed__content > *');
-    $maxLoop = count($items);
+    public function appendSingleAdvertising(int $index, int $advIndex): string
+    {
+        $items = $this->dom->find('#adv__parsed__content > *');
+        $maxLoop = count($items);
 
-    if ($index >= $maxLoop) {
+        if ($index >= $maxLoop) {
+            return $this->dom->save();
+        }
+
+        $currentItem = $items[$index];
+        $previousItem = $index > 0 ? $items[$index - 1] : null;
+
+        if (
+            ! preg_match($this->blacklist, $currentItem->outertext) &&
+            (! $previousItem || ! preg_match($this->blacklist, $previousItem->outertext))
+        ) {
+            $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
+        }
+        else {
+            $this->appendSingleAdvertising($index + 1, $advIndex);
+        }
+
         return $this->dom->save();
     }
 
-    $currentItem = $items[$index];
-    $previousItem = $index > 0 ? $items[$index - 1] : null;
-
-    if (
-        ! preg_match($this->blacklist, $currentItem->outertext) &&
-        (! $previousItem || ! preg_match($this->blacklist, $previousItem->outertext)) &&
-        strip_tags($currentItem->outertext) !== ''
-    ) {
-        $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
-    }
-    else {
-        // Se l'elemento corrente o il precedente è in blacklist, cerca il prossimo elemento non in blacklist
-        for ($nextIndex = $index + 1; $nextIndex < $maxLoop; $nextIndex++) {
-            $nextItem = $items[$nextIndex];
-            if (! preg_match($this->blacklist, $nextItem->outertext) && strip_tags($nextItem->outertext) !== '') {
-                $nextItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
-                break;
-            }
-        }
-    }
-
-    return $this->dom->save();
-}
     /**
      * Remove the wrapping div
      */
