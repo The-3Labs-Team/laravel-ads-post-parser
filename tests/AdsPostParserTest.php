@@ -34,7 +34,7 @@ it('can append advertising', function () {
 
 it('can append single advertising', function () {
     $content = (new AdsPostParser($this->content))
-    ->appendSingleAdvertising(2, 1);
+        ->appendSingleAdvertising(2, 1);
     expect($content)->toContain('YOUR AD1 HERE');
 });
 

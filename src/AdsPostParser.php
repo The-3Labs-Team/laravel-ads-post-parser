@@ -43,37 +43,38 @@ class AdsPostParser
     /**
      * Append a single advertising
      */
-public function appendSingleAdvertising(int $index, int $advIndex): string
-{
-    $items = $this->dom->find('#adv__parsed__content > *');
-    $maxLoop = count($items);
+    public function appendSingleAdvertising(int $index, int $advIndex): string
+    {
+        $items = $this->dom->find('#adv__parsed__content > *');
+        $maxLoop = count($items);
 
-    if ($index >= $maxLoop) {
+        if ($index >= $maxLoop) {
+            return $this->dom->save();
+        }
+
+        $currentItem = $items[$index];
+        $nextItem = $items[$index + 1] ?? null;
+
+        static $adIndices = [];
+
+        if (in_array($index, $adIndices)) {
+            return $this->appendSingleAdvertising($index + 1, $advIndex);
+        }
+
+        if (
+            ! preg_match($this->blacklist, $currentItem->outertext) &&
+            (! $nextItem || ! preg_match($this->blacklist, $nextItem->outertext)) &&
+            (! $nextItem || preg_match('/<\w+/', $nextItem->outertext))
+        ) {
+            $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
+            $adIndices[] = $index; // Aggiungi l'indice corrente a $adIndices
+        } else {
+            $this->appendSingleAdvertising($index + 1, $advIndex);
+        }
+
         return $this->dom->save();
     }
 
-    $currentItem = $items[$index];
-    $nextItem = $items[$index + 1] ?? null;
-
-    static $adIndices = [];
-
-    if (in_array($index, $adIndices)) {
-        return $this->appendSingleAdvertising($index + 1, $advIndex);
-    }
-
-    if (
-        ! preg_match($this->blacklist, $currentItem->outertext) &&
-        (! $nextItem || ! preg_match($this->blacklist, $nextItem->outertext)) &&
-        (! $nextItem || preg_match('/<\w+/', $nextItem->outertext))
-    ) {
-        $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
-        $adIndices[] = $index; // Aggiungi l'indice corrente a $adIndices
-    } else {
-        $this->appendSingleAdvertising($index + 1, $advIndex);
-    }
-
-    return $this->dom->save();
-}
     /**
      * Remove the wrapping div
      */
