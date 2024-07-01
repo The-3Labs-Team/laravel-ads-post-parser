@@ -56,8 +56,8 @@ class AdsPostParser
         $previousItem = $index > 0 ? $items[$index - 1] : null;
 
         if (
-//            ! preg_match($this->blacklist, $currentItem->outertext) &&
-            (! $previousItem || ! preg_match($this->blacklist, $previousItem->outertext))
+            ! preg_match($this->blacklist, $currentItem->outertext)
+//            && (! $previousItem || ! preg_match($this->blacklist, $previousItem->outertext))
         ) {
             $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
         } else {
