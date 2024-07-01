@@ -61,20 +61,21 @@ public function appendSingleAdvertising(int $index, int $advIndex): string
         return $this->appendSingleAdvertising($index + 1, $advIndex);
     }
 
+    // Verifica se l'elemento corrente contiene effettivamente dell'HTML
     if (
         ! preg_match($this->blacklist, $currentItem->outertext) &&
         (! $nextItem || ! preg_match($this->blacklist, $nextItem->outertext)) &&
-        (! $nextItem || preg_match('/<\w+/', $nextItem->outertext))
+        (! $nextItem || preg_match('/<\w+/', $nextItem->outertext)) &&
+        strip_tags($currentItem->outertext) !== '' // Aggiungi questa condizione
     ) {
         $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
-        $adIndices[] = $index; // Aggiungi l'indice corrente a $adIndices
+        $adIndices[] = $index;
     } else {
         $this->appendSingleAdvertising($index + 1, $advIndex);
     }
 
     return $this->dom->save();
-}
-    /**
+}    /**
      * Remove the wrapping div
      */
     public function removeWrappingDiv(): string
