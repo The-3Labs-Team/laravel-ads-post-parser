@@ -61,12 +61,11 @@ public function appendSingleAdvertising(int $index, int $advIndex): string
         return $this->appendSingleAdvertising($index + 1, $advIndex);
     }
 
-    // Verifica se l'elemento corrente contiene effettivamente dell'HTML
     if (
         ! preg_match($this->blacklist, $currentItem->outertext) &&
         (! $nextItem || ! preg_match($this->blacklist, $nextItem->outertext)) &&
         (! $nextItem || preg_match('/<\w+/', $nextItem->outertext)) &&
-        strip_tags($currentItem->outertext) !== '' // Aggiungi questa condizione
+        strip_tags($currentItem->outertext) !== ''
     ) {
         $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
         $adIndices[] = $index;
