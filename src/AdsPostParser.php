@@ -55,11 +55,11 @@ class AdsPostParser
         $currentItem = $items[$index];
         $previousItem = $index > 0 ? $items[$index - 1] : null;
 
-//        static $adIndices = [];
-//
-//        if (in_array($index, $adIndices)) {
-//            return $this->appendSingleAdvertising($index + 1, $advIndex);
-//        }
+        //        static $adIndices = [];
+        //
+        //        if (in_array($index, $adIndices)) {
+        //            return $this->appendSingleAdvertising($index + 1, $advIndex);
+        //        }
 
         // Verifica se l'elemento precedente non è in blacklist
         if (
