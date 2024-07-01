@@ -53,7 +53,7 @@ public function appendSingleAdvertising(int $index, int $advIndex): string
     }
 
     $currentItem = $items[$index];
-    $nextItem = $items[$index + 1] ?? null;
+    $previousItem = $index > 0 ? $items[$index - 1] : null;
 
     static $adIndices = [];
 
@@ -61,10 +61,10 @@ public function appendSingleAdvertising(int $index, int $advIndex): string
         return $this->appendSingleAdvertising($index + 1, $advIndex);
     }
 
+    // Verifica se l'elemento precedente non è in blacklist
     if (
         ! preg_match($this->blacklist, $currentItem->outertext) &&
-        (! $nextItem || ! preg_match($this->blacklist, $nextItem->outertext)) &&
-        (! $nextItem || preg_match('/<\w+/', $nextItem->outertext)) &&
+        (! $previousItem || ! preg_match($this->blacklist, $previousItem->outertext)) &&
         strip_tags($currentItem->outertext) !== ''
     ) {
         $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
@@ -74,7 +74,8 @@ public function appendSingleAdvertising(int $index, int $advIndex): string
     }
 
     return $this->dom->save();
-}    /**
+}
+    /**
      * Remove the wrapping div
      */
     public function removeWrappingDiv(): string
