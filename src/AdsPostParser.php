@@ -60,8 +60,7 @@ class AdsPostParser
             (! $previousItem || ! preg_match($this->blacklist, $previousItem->outertext))
         ) {
             $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
-        }
-        else {
+        } else {
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
 
