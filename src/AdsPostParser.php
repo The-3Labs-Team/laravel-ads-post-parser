@@ -67,9 +67,8 @@ class AdsPostParser
             strip_tags($currentItem->outertext) !== ''
         ) {
             $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
-//            $adIndices[] = $index;
-        }
-        else {
+            //            $adIndices[] = $index;
+        } else {
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
 
