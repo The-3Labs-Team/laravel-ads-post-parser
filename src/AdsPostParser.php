@@ -8,6 +8,7 @@ use voku\helper\HtmlDomParser;
 class AdsPostParser
 {
     public string $blacklistBefore;
+
     public string $blacklistAfter;
 
     public $dom;
@@ -68,5 +69,4 @@ class AdsPostParser
 
         return $this->dom->save();
     }
-
 }

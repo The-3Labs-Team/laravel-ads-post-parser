@@ -27,5 +27,5 @@ return [
     'blacklist' => [
         'before' => '/<iframe|<img|<h2|<h3|<ul|<li|<div/',
         'after' => '/<iframe|<img|<ul|<li|<table|<div/',
-    ]
+    ],
 ];
