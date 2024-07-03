@@ -35,6 +35,16 @@ php artisan vendor:publish --tag="laravel-ads-post-parser-views"
 
 ## Usage
 
+You must encapsulate your post content in a `div` tag with the id `adv__parsed__content`:
+
+```html
+<div id="adv__parsed__content">
+    {!! $parsedContent !!}
+</div>
+```
+
+Then you can use the `AdsPostParser` class to append advertising to your post:
+
 ```php
 $parsedContent = (new AdsPostParser($content))->appendAdvertising();
 ```

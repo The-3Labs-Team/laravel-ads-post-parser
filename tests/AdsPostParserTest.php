@@ -38,7 +38,8 @@ it('can append single advertising', function () {
     expect($content)->toContain('YOUR AD1 HERE');
 });
 
-//it('can remove wrapping div', function () {
-//    $content = (new AdsPostParser($this->content))->appendAdvertising()->removeWrappingDiv();
-//    expect($content)->not()->toContain('<div id="adv__parsed__content">');
-//});
+it('can append single advertising with index greater than the number of paragraphs', function () {
+    $content = (new AdsPostParser($this->content))
+        ->appendSingleAdvertising(100, 1);
+    expect($content)->not()->toContain('YOUR AD1 HERE');
+});
