@@ -69,14 +69,4 @@ class AdsPostParser
         return $this->dom->save();
     }
 
-    /**
-     * Remove the wrapping div
-     */
-    public function removeWrappingDiv(): string
-    {
-        $contentDiv = $this->dom->find('#adv__parsed__content', 0);
-        $html = $contentDiv->save();
-
-        return $html;
-    }
 }
