@@ -7,7 +7,8 @@ use voku\helper\HtmlDomParser;
 
 class AdsPostParser
 {
-    public string $blacklist;
+    public string $blacklistBefore;
+    public string $blacklistAfter;
 
     public $dom;
 
@@ -18,7 +19,8 @@ class AdsPostParser
      */
     public function __construct(string $content)
     {
-        $this->blacklist = config('ads-post-parser.blacklist');
+        $this->blacklistBefore = config('ads-post-parser.blacklist.before');
+        $this->blacklistAfter = config('ads-post-parser.blacklist.after');
         $this->dom = HtmlDomParser::str_get_html("<div id='adv__parsed__content'>$content</div>");
         $this->content = $content;
     }
@@ -52,14 +54,14 @@ class AdsPostParser
             return $this->dom->save();
         }
 
-        $currentItem = $items[$index];
+        $beforeItem = $items[$index];
         $nextItem = $index < $maxLoop - 1 ? $items[$index + 1] : null;
 
         if (
-            ! preg_match($this->blacklist, $currentItem->outertext)
-            && ($nextItem === null || ! preg_match($this->blacklist, $nextItem->outertext))
+            ! preg_match($this->blacklistBefore, $beforeItem->outertext)
+            && ($nextItem === null || ! preg_match($this->blacklistAfter, $nextItem->outertext))
         ) {
-            $currentItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
+            $beforeItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
         } else {
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
