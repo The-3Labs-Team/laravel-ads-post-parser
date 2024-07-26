@@ -8,7 +8,7 @@
 
 Laravel ADS Post Parser is a powerful and flexible package that revolutionizes the way you integrate advertisements into your Laravel-powered content. Whether you're running a blog, news site, or any content-rich platform, this package offers a seamless solution to boost your revenue without compromising user experience.
 
-<p align="center"><img src="https://github.com/the-3labs-team/laravel-ads-post-parser/raw/HEAD/art/banner.png" width="100%" alt="Logo Laravel ADS Post Parser"></p>
+<p align="center"><img src="https://github.com/the-3labs-team/laravel-ads-post-parser/raw/HEAD/art/how-it-works.png" width="100%" alt="Logo Laravel ADS Post Parser"></p>
 
 ### 🚀 Key Features
 
