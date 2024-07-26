@@ -37,7 +37,6 @@
     "autoload": {
         "psr-4": {
             "The3LabsTeam\\AdsPostParser\\": "src",
-            "The3LabsTeam\\AdsPostParser\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
