@@ -84,6 +84,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Stefano Novelli](https://github.com/The-3Labs-Team)
+- [voku](https://github.com/voku) - Creator of portable-utf8 and simple_html_dom packages
 - [All Contributors](../../contributors)
 
 ## License
