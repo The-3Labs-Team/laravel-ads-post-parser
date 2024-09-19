@@ -67,6 +67,7 @@ class AdsPostParser
             } catch (\Exception $e) {
                 // Content without ADV
             }
+
         } else {
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
