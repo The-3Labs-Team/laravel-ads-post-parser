@@ -62,7 +62,11 @@ class AdsPostParser
             ! preg_match($this->blacklistBefore, $beforeItem->outertext)
             && ($nextItem === null || ! preg_match($this->blacklistAfter, $nextItem->outertext))
         ) {
-            $beforeItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
+            try {
+                $beforeItem->outertext .= Blade::render('ads-post-parser::ads' . $advIndex);
+            } catch (\Exception $e) {
+                // Content without ADV
+            }
         } else {
             $this->appendSingleAdvertising($index + 1, $advIndex);
         }
