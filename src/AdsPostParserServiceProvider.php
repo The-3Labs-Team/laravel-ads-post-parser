@@ -18,9 +18,6 @@ class AdsPostParserServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-ads-post-parser')
             ->hasConfigFile()
-            ->hasViews()
-
-            ->hasMigration('create_laravel-ads-post-parser_table')
-            ->hasCommand(AdsPostParserCommand::class);
+            ->hasViews();
     }
 }
