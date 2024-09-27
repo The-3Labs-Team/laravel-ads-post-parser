@@ -4,7 +4,6 @@ namespace The3LabsTeam\AdsPostParser;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use The3LabsTeam\AdsPostParser\Commands\AdsPostParserCommand;
 
 class AdsPostParserServiceProvider extends PackageServiceProvider
 {
