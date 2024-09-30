@@ -4,7 +4,6 @@ namespace The3LabsTeam\AdsPostParser;
 
 use Illuminate\Support\Facades\Blade;
 use voku\helper\HtmlDomParser;
-use function DI\string;
 
 class AdsPostParser
 {
@@ -42,14 +41,15 @@ class AdsPostParser
 
             $currentElement = $item;
             $afterElement = $index < count($items) - 1 ? $items[$index + 1] : null;
-            $isBlackList = preg_match('/' . implode('|', $blacklist) . '/', $currentElement->outertext) || ($afterElement ? preg_match('/' . implode('|', $blacklist) . '/', $afterElement->outertext) : false);
+            $isBlackList = preg_match('/'.implode('|', $blacklist).'/', $currentElement->outertext) || ($afterElement ? preg_match('/'.implode('|', $blacklist).'/', $afterElement->outertext) : false);
             // === END BLACKLIST ===
 
             if (in_array($index, $thresholds)) {
                 if ($isBlackList) {
-                    $thresholds = array_map(function($value) {
+                    $thresholds = array_map(function ($value) {
                         return $value + 1;
                     }, $thresholds);
+
                     continue;
                 }
 
@@ -79,7 +79,6 @@ class AdsPostParser
         return $this->dom->save();
     }
 
-
     /**
      * Append a single advertising
      */
@@ -94,7 +93,6 @@ class AdsPostParser
 
         $beforeItem = $items[$index];
         $nextItem = $index < $maxLoop - 1 ? $items[$index + 1] : null;
-
 
         if (
             ! preg_match($this->blacklistBefore, $beforeItem->outertext) && ($nextItem === null || ! preg_match($this->blacklistAfter, $nextItem->outertext))
@@ -111,5 +109,4 @@ class AdsPostParser
 
         return $this->dom->save();
     }
-
 }
