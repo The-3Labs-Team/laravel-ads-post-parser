@@ -66,8 +66,8 @@ it('can append first and second advertising only paragraphs', function () {
     $content = (new AdsPostParser($this->contentOnlyParagraphs))->appendAdvertising();
 
     expect($content)
-        ->toContain("<p>Paragraph1</p><div>--- YOUR AD1 HERE ---</div>")
-        ->toContain("<p>Paragraph4</p><div>--- YOUR AD2 HERE ---</div>");
+        ->toContain('<p>Paragraph1</p><div>--- YOUR AD1 HERE ---</div>')
+        ->toContain('<p>Paragraph4</p><div>--- YOUR AD2 HERE ---</div>');
 });
 
 it('can append first and second advertising', function () {
