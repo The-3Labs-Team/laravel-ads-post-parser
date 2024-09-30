@@ -111,4 +111,5 @@ class AdsPostParser
 
         return $this->dom->save();
     }
+
 }
