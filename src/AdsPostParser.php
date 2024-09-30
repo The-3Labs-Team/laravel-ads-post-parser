@@ -4,6 +4,7 @@ namespace The3LabsTeam\AdsPostParser;
 
 use Illuminate\Support\Facades\Blade;
 use voku\helper\HtmlDomParser;
+use function DI\string;
 
 class AdsPostParser
 {
@@ -32,6 +33,41 @@ class AdsPostParser
     public function appendAdvertising(): string
     {
         $thresholds = config('ads-post-parser.thresholds');
+        $items = $this->dom->find('#adv__parsed__content > *');
+        $adsCount = 0;
+
+        foreach ($items as $index => $item) {
+            // === BLACKLIST ===
+            $blacklist = explode('|', trim($this->blacklistAfter, '/'));
+
+            $currentElement = $item;
+            $afterElement = $index < count($items) - 1 ? $items[$index + 1] : null;
+            $isBlackList = preg_match('/' . implode('|', $blacklist) . '/', $currentElement->outertext) || ($afterElement ? preg_match('/' . implode('|', $blacklist) . '/', $afterElement->outertext) : false);
+            // === END BLACKLIST ===
+
+            if (in_array($index, $thresholds)) {
+                if ($isBlackList) {
+                    $thresholds = array_map(function($value) {
+                        return $value + 1;
+                    }, $thresholds);
+                    continue;
+                }
+
+                try {
+                    $currentElement->outertext .= Blade::render('ads-post-parser::ads'.array_keys($thresholds)[$adsCount]);
+                } catch (\Exception $e) {
+                    // Content without ADV
+                }
+                $adsCount++;
+            }
+        }
+
+        return $this->dom->save();
+    }
+
+    public function oldappendAdvertising(): string
+    {
+        $thresholds = config('ads-post-parser.thresholds');
 
         foreach ($thresholds as $advIndex => $threshold) {
             $this->appendSingleAdvertising(
@@ -42,6 +78,7 @@ class AdsPostParser
 
         return $this->dom->save();
     }
+
 
     /**
      * Append a single advertising
@@ -58,11 +95,12 @@ class AdsPostParser
         $beforeItem = $items[$index];
         $nextItem = $index < $maxLoop - 1 ? $items[$index + 1] : null;
 
+
         if (
-            ! preg_match($this->blacklistBefore, $beforeItem->outertext)
-            && ($nextItem === null || ! preg_match($this->blacklistAfter, $nextItem->outertext))
+            ! preg_match($this->blacklistBefore, $beforeItem->outertext) && ($nextItem === null || ! preg_match($this->blacklistAfter, $nextItem->outertext))
         ) {
             try {
+                echo $index . ' - ' . $advIndex . '<br>';
                 $beforeItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
             } catch (\Exception $e) {
                 // Content without ADV
