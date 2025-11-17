@@ -29,7 +29,7 @@ class AdsPostParser
     /**
      * Append all the advertising
      */
-    public function appendAdvertising(): string
+    public function appendAdvertising(array $params = []): string
     {
         $thresholds = config('ads-post-parser.thresholds');
         $items = $this->dom->find('#adv__parsed__content > *');
@@ -54,7 +54,7 @@ class AdsPostParser
                 }
 
                 try {
-                    $currentElement->outertext .= Blade::render('ads-post-parser::ads'.array_keys($thresholds)[$adsCount]);
+                    $currentElement->outertext .= Blade::render('ads-post-parser::ads'.array_keys($thresholds)[$adsCount], ['params' => $params]);
                 } catch (\Exception $e) {
                     // Content without ADV
                 }
@@ -82,7 +82,7 @@ class AdsPostParser
     /**
      * Append a single advertising
      */
-    public function appendSingleAdvertising(int $index, int $advIndex): string
+    public function appendSingleAdvertising(int $index, int $advIndex, array $params = []): string
     {
         $items = $this->dom->find('#adv__parsed__content > *');
         $maxLoop = count($items);
@@ -98,7 +98,7 @@ class AdsPostParser
             ! preg_match($this->blacklistBefore, $beforeItem->outertext) && ($nextItem === null || ! preg_match($this->blacklistAfter, $nextItem->outertext))
         ) {
             try {
-                $beforeItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex);
+                $beforeItem->outertext .= Blade::render('ads-post-parser::ads'.$advIndex, ['params' => $params]);
             } catch (\Exception $e) {
                 // Content without ADV
             }
