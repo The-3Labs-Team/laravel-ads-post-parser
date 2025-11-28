@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-ads-post-parser` will be documented in this file.
 
+## v5.0.0 - 2025-11-28
+
+### What's Changed
+
+* Fix ad rendering logic to prepend ads to current element's outertext by @Claudio-Emmolo in https://github.com/The-3Labs-Team/laravel-ads-post-parser/pull/33
+
+**Full Changelog**: https://github.com/The-3Labs-Team/laravel-ads-post-parser/compare/v4.0.2...v5.0.0
+
 ## v4.0.2 - 2025-11-17
 
 ### What's Changed
