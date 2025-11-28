@@ -54,7 +54,7 @@ class AdsPostParser
                 }
 
                 try {
-                    $currentElement->outertext .= Blade::render('ads-post-parser::ads'.array_keys($thresholds)[$adsCount], ['params' => $params]);
+                    $currentElement->outertext = Blade::render('ads-post-parser::ads'.array_keys($thresholds)[$adsCount], ['params' => $params]).$currentElement->outertext;
                 } catch (\Exception $e) {
                     // Content without ADV
                 }
