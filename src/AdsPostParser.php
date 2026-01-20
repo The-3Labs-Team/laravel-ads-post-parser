@@ -29,7 +29,7 @@ class AdsPostParser
     /**
      * Append all the advertising
      */
-    public function appendAdvertising(array $params = []): string
+    public function appendAdvertising(array $params = [], ?string $customHtml = null): string
     {
         $thresholds = config('ads-post-parser.thresholds');
         $items = $this->dom->find('#adv__parsed__content > *');
@@ -54,7 +54,7 @@ class AdsPostParser
                 }
 
                 try {
-                    $currentElement->outertext = Blade::render('ads-post-parser::ads'.array_keys($thresholds)[$adsCount], ['params' => $params]).$currentElement->outertext;
+                    $currentElement->outertext = ($customHtml ?? Blade::render('ads-post-parser::ads'.array_keys($thresholds)[$adsCount], ['params' => $params])).$currentElement->outertext;
                 } catch (\Exception $e) {
                     // Content without ADV
                 }
