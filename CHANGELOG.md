@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-ads-post-parser` will be documented in this file.
 
+## v5.0.1 - 2026-01-20
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/The-3Labs-Team/laravel-ads-post-parser/pull/34
+
+**Full Changelog**: https://github.com/The-3Labs-Team/laravel-ads-post-parser/compare/v5.0.0...v5.0.1
+
 ## v5.0.0 - 2025-11-28
 
 ### What's Changed
