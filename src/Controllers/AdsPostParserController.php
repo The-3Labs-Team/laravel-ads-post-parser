@@ -16,7 +16,7 @@ class AdsPostParserController extends Controller
         $rawHtml = $request->get('raw_html', '');
 
         $rawHtml = $this->parseShortcodesToHtml($rawHtml);
-        
+
         $parser = new \The3LabsTeam\AdsPostParser\AdsPostParser($rawHtml);
         $parsedHtml = $parser->appendAdvertising(customHtml: '<small>[ADV PREVIEW]</small>');
 
@@ -27,11 +27,8 @@ class AdsPostParserController extends Controller
 
     /**
      * Convert shortcodes in HTML with data-shortcode attribute
-     * 
-     * ex: [index] => <div data-shortcode="[index]"></div>
      *
-     * @param string $html
-     * @return string
+     * ex: [index] => <div data-shortcode="[index]"></div>
      */
     protected function parseShortcodesToHtml(string $html): string
     {
@@ -42,7 +39,7 @@ class AdsPostParserController extends Controller
             $shortcodeName = $match[1];
             $shortcodeFull = $match[0];
 
-            //Sostituisco lo shortcode con un small che ha data-shortcode
+            // Sostituisco lo shortcode con un small che ha data-shortcode
             $replacement = '<div data-shortcode="'.htmlspecialchars($shortcodeFull).'">['.htmlspecialchars($shortcodeName).']</div>';
             $html = str_replace($shortcodeFull, $replacement, $html);
         }
@@ -52,11 +49,8 @@ class AdsPostParserController extends Controller
 
     /**
      * Convert div with data-shortcode back to shortcode
-     * 
-     * ex: <div data-shortcode="[index]"></div> => [index]
      *
-     * @param string $html
-     * @return string
+     * ex: <div data-shortcode="[index]"></div> => [index]
      */
     protected function parseHtmlToShortcodes(string $html): string
     {
