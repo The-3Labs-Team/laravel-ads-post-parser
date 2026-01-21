@@ -14,8 +14,8 @@ class AdsPostParserController extends Controller
     public function getPreviewHtml(Request $request): JsonResponse
     {
         $rawHtml = $request->get('raw_html', '');
-
         $rawHtml = $this->parseShortcodesToHtml($rawHtml);
+        $rawHtml = '<html><body>'.$rawHtml.'</body></html>';
 
         $parser = new \The3LabsTeam\AdsPostParser\AdsPostParser($rawHtml);
         $parsedHtml = $parser->appendAdvertising(customHtml: '<small>[ADV PREVIEW]</small>');
@@ -40,7 +40,7 @@ class AdsPostParserController extends Controller
             $shortcodeFull = $match[0];
 
             // Sostituisco lo shortcode con un small che ha data-shortcode
-            $replacement = '<div data-shortcode="'.htmlspecialchars($shortcodeFull).'">['.htmlspecialchars($shortcodeName).']</div>';
+            $replacement = '<div data-shortcode="'.htmlspecialchars($shortcodeFull).'"></div>';
             $html = str_replace($shortcodeFull, $replacement, $html);
         }
 
@@ -58,8 +58,18 @@ class AdsPostParserController extends Controller
         $elements = $dom->find('div[data-shortcode]');
 
         foreach ($elements as $element) {
+            // Trova il tag precedente saltando i text nodes (#text)
+            $previousTag = $element->previousSibling();
+            while ($previousTag && $previousTag->tag === '#text') {
+                $previousTag = $previousTag->previousSibling();
+            }
+            
+            if ($previousTag && $previousTag->tag === 'p' && trim($previousTag->innerHtml()) === '') {
+                $previousTag->outertext = '';
+            }
+            
             $shortcode = htmlspecialchars_decode($element->getAttribute('data-shortcode'));
-            $element->outertext = $shortcode;
+            $element->outertext = '<p>' . $shortcode . '</p>';
         }
 
         return $dom->innerHtml();
