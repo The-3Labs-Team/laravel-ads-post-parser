@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-ads-post-parser` will be documented in this file.
 
+## v5.0.2 - 2026-01-21
+
+**Full Changelog**: https://github.com/The-3Labs-Team/laravel-ads-post-parser/compare/v5.0.1...v5.0.2
+
 ## v5.0.1 - 2026-01-20
 
 ### What's Changed
