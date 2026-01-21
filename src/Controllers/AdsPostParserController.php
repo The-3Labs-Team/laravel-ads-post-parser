@@ -63,13 +63,13 @@ class AdsPostParserController extends Controller
             while ($previousTag && $previousTag->tag === '#text') {
                 $previousTag = $previousTag->previousSibling();
             }
-            
+
             if ($previousTag && $previousTag->tag === 'p' && trim($previousTag->innerHtml()) === '') {
                 $previousTag->outertext = '';
             }
-            
+
             $shortcode = htmlspecialchars_decode($element->getAttribute('data-shortcode'));
-            $element->outertext = '<p>' . $shortcode . '</p>';
+            $element->outertext = '<p>'.$shortcode.'</p>';
         }
 
         return $dom->innerHtml();
