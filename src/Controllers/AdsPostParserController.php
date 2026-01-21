@@ -15,9 +15,59 @@ class AdsPostParserController extends Controller
     {
         $rawHtml = $request->get('raw_html', '');
 
+        $rawHtml = $this->parseShortcodesToHtml($rawHtml);
+        
         $parser = new \The3LabsTeam\AdsPostParser\AdsPostParser($rawHtml);
         $parsedHtml = $parser->appendAdvertising(customHtml: '<small>[ADV PREVIEW]</small>');
 
+        $parsedHtml = $this->parseHtmlToShortcodes($parsedHtml);
+
         return response()->json($parsedHtml);
+    }
+
+    /**
+     * Convert shortcodes in HTML with data-shortcode attribute
+     * 
+     * ex: [index] => <div data-shortcode="[index]"></div>
+     *
+     * @param string $html
+     * @return string
+     */
+    protected function parseShortcodesToHtml(string $html): string
+    {
+        $shortcodeRegex = '/\[(\w+)([^\]]*)\](?:([^\[]*?)\[\/\1\])?/';
+        preg_match_all($shortcodeRegex, $html, $matches, PREG_SET_ORDER);
+
+        foreach ($matches as $match) {
+            $shortcodeName = $match[1];
+            $shortcodeFull = $match[0];
+
+            //Sostituisco lo shortcode con un small che ha data-shortcode
+            $replacement = '<div data-shortcode="'.htmlspecialchars($shortcodeFull).'">['.htmlspecialchars($shortcodeName).']</div>';
+            $html = str_replace($shortcodeFull, $replacement, $html);
+        }
+
+        return $html;
+    }
+
+    /**
+     * Convert div with data-shortcode back to shortcode
+     * 
+     * ex: <div data-shortcode="[index]"></div> => [index]
+     *
+     * @param string $html
+     * @return string
+     */
+    protected function parseHtmlToShortcodes(string $html): string
+    {
+        $dom = \voku\helper\HtmlDomParser::str_get_html($html);
+        $elements = $dom->find('div[data-shortcode]');
+
+        foreach ($elements as $element) {
+            $shortcode = htmlspecialchars_decode($element->getAttribute('data-shortcode'));
+            $element->outertext = $shortcode;
+        }
+
+        return $dom->innerHtml();
     }
 }
