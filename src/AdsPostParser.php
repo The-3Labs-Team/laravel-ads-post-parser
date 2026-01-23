@@ -31,7 +31,7 @@ class AdsPostParser
      */
     public function appendAdvertising(array $params = [], ?string $customHtml = null): string
     {
-        //rimuovi tutte le <p></p> vuote nel dom create degli shortcode
+        // rimuovi tutte le <p></p> vuote nel dom create degli shortcode
         foreach ($this->dom->find('p') as $p) {
             if (trim($p->innertext) === '') {
                 $p->outertext = '';
@@ -53,13 +53,13 @@ class AdsPostParser
 
             $isBlackList = preg_match('/'.implode('|', $blacklistAfter).'/', $currentElement->outertext) || ($beforeElement ? preg_match('/'.implode('|', $blacklistBefore).'/', $beforeElement->outertext) : false);
 
-            //Check preview ADV blacklist
+            // Check preview ADV blacklist
             if (! $isBlackList) {
-                //Controlla il currentElement
+                // Controlla il currentElement
                 if (preg_match('/<span class="adv-preview"/', $currentElement->outertext)) {
                     $isBlackList = true;
                 } else {
-                    //Controlla il beforeElement
+                    // Controlla il beforeElement
                     if ($beforeElement && preg_match('/<span class="adv-preview"/', $beforeElement->outertext)) {
                         $isBlackList = true;
                     }

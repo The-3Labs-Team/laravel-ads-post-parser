@@ -60,7 +60,7 @@ class AdsPostParserController extends Controller
 
         foreach ($elements as $element) {
             $shortcode = htmlspecialchars_decode($element->getAttribute('data-shortcode'));
-            
+
             // Verifica se l'elemento è dentro un <p>
             $parent = $element->parent();
             if ($parent && $parent->tag === 'p') {
@@ -69,11 +69,11 @@ class AdsPostParserController extends Controller
                 while ($previousTag && $previousTag->tag === '#text') {
                     $previousTag = $previousTag->previousSibling();
                 }
-                
+
                 if ($previousTag && $previousTag->tag === 'p' && trim($previousTag->innerHtml()) === '') {
                     $previousTag->outertext = '';
                 }
-                
+
                 // Sostituisci l'intero paragrafo padre
                 $parent->outertext = '<p>'.$shortcode.'</p>';
             } else {

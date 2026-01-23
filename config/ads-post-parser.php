@@ -47,5 +47,5 @@ return [
         'reddit' => 'div',
         'youtube' => 'div',
         'tiktok' => 'div',
-    ]
+    ],
 ];
