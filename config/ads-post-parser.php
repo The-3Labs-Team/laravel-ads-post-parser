@@ -28,4 +28,24 @@ return [
         'before' => '/<iframe|<img|<h2|<h3|<ul|<li|<div/',
         'after' => '/<iframe|<img|<ul|<li|<table|<div/',
     ],
+
+    'shortcode_tags' => [
+        'button' => 'a',
+        'distico' => 'div',
+        'photo' => 'div',
+        'widgetbay' => 'div',
+        'index' => 'ul',
+        'leggianche' => 'div',
+        'spoiler' => 'div',
+        'faq' => 'details',
+        'survey' => 'div',
+        'trivia' => 'div',
+        'facebook' => 'span',
+        'instagram' => 'iframe',
+        'twitter' => 'div',
+        'bluesky' => 'div',
+        'reddit' => 'div',
+        'youtube' => 'div',
+        'tiktok' => 'div',
+    ]
 ];

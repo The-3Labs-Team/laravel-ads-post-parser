@@ -15,7 +15,6 @@ class AdsPostParserController extends Controller
     {
         $rawHtml = $request->get('raw_html', '');
         $rawHtml = $this->parseShortcodesToHtml($rawHtml);
-        $rawHtml = '<html><body>'.$rawHtml.'</body></html>';
 
         $parser = new \The3LabsTeam\AdsPostParser\AdsPostParser($rawHtml);
         $parsedHtml = $parser->appendAdvertising(customHtml: '<small>[ADV PREVIEW]</small>');
@@ -39,8 +38,10 @@ class AdsPostParserController extends Controller
             $shortcodeName = $match[1];
             $shortcodeFull = $match[0];
 
+            $tag = config("ads-post-parser.shortcode_tags.$shortcodeName", 'div');
+
             // Sostituisco lo shortcode con un small che ha data-shortcode
-            $replacement = '<div data-shortcode="'.htmlspecialchars($shortcodeFull).'"></div>';
+            $replacement = '<'.$tag.' data-shortcode="'.htmlspecialchars($shortcodeFull).'"></'.$tag.'>';
             $html = str_replace($shortcodeFull, $replacement, $html);
         }
 
@@ -48,14 +49,14 @@ class AdsPostParserController extends Controller
     }
 
     /**
-     * Convert div with data-shortcode back to shortcode
+     * Convert element with data-shortcode back to shortcode
      *
-     * ex: <div data-shortcode="[index]"></div> => [index]
+     * ex: <* data-shortcode="[index]"></*> => [index]
      */
     protected function parseHtmlToShortcodes(string $html): string
     {
         $dom = \voku\helper\HtmlDomParser::str_get_html($html);
-        $elements = $dom->find('div[data-shortcode]');
+        $elements = $dom->find('[data-shortcode]');
 
         foreach ($elements as $element) {
             // Trova il tag precedente saltando i text nodes (#text)
