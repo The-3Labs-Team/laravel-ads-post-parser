@@ -59,18 +59,36 @@ class AdsPostParserController extends Controller
         $elements = $dom->find('[data-shortcode]');
 
         foreach ($elements as $element) {
-            // Trova il tag precedente saltando i text nodes (#text)
-            $previousTag = $element->previousSibling();
-            while ($previousTag && $previousTag->tag === '#text') {
-                $previousTag = $previousTag->previousSibling();
-            }
-
-            if ($previousTag && $previousTag->tag === 'p' && trim($previousTag->innerHtml()) === '') {
-                $previousTag->outertext = '';
-            }
-
             $shortcode = htmlspecialchars_decode($element->getAttribute('data-shortcode'));
-            $element->outertext = '<p>'.$shortcode.'</p>';
+            
+            // Verifica se l'elemento è dentro un <p>
+            $parent = $element->parent();
+            if ($parent && $parent->tag === 'p') {
+                // Rimuovi il paragrafo precedente se vuoto
+                $previousTag = $parent->previousSibling();
+                while ($previousTag && $previousTag->tag === '#text') {
+                    $previousTag = $previousTag->previousSibling();
+                }
+                
+                if ($previousTag && $previousTag->tag === 'p' && trim($previousTag->innerHtml()) === '') {
+                    $previousTag->outertext = '';
+                }
+                
+                // Sostituisci l'intero paragrafo padre
+                $parent->outertext = '<p>'.$shortcode.'</p>';
+            } else {
+                // Se non è dentro un <p>, gestisci come prima
+                $previousTag = $element->previousSibling();
+                while ($previousTag && $previousTag->tag === '#text') {
+                    $previousTag = $previousTag->previousSibling();
+                }
+
+                if ($previousTag && $previousTag->tag === 'p' && trim($previousTag->innerHtml()) === '') {
+                    $previousTag->outertext = '';
+                }
+
+                $element->outertext = '<p>'.$shortcode.'</p>';
+            }
         }
 
         return $dom->innerHtml();
