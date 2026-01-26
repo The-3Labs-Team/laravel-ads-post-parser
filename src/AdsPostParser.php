@@ -31,17 +31,40 @@ class AdsPostParser
      */
     public function appendAdvertising(array $params = [], ?string $customHtml = null): string
     {
+        // rimuovi tutte le <p></p> vuote nel dom create degli shortcode
+        foreach ($this->dom->find('p') as $p) {
+            if (trim($p->innertext) === '') {
+                $p->outertext = '';
+            }
+        }
+
         $thresholds = config('ads-post-parser.thresholds');
         $items = $this->dom->find('#adv__parsed__content > *');
         $adsCount = 0;
 
         foreach ($items as $index => $item) {
             // === BLACKLIST ===
-            $blacklist = explode('|', trim($this->blacklistAfter, '/'));
+            $blacklistAfter = explode('|', trim($this->blacklistAfter, '/'));
+            $blacklistBefore = explode('|', trim($this->blacklistBefore, '/'));
 
             $currentElement = $item;
             $afterElement = $index < count($items) - 1 ? $items[$index + 1] : null;
-            $isBlackList = preg_match('/'.implode('|', $blacklist).'/', $currentElement->outertext) || ($afterElement ? preg_match('/'.implode('|', $blacklist).'/', $afterElement->outertext) : false);
+            $beforeElement = $index > 0 ? $items[$index - 1] : null;
+
+            $isBlackList = preg_match('/'.implode('|', $blacklistAfter).'/', $currentElement->outertext) || ($beforeElement ? preg_match('/'.implode('|', $blacklistBefore).'/', $beforeElement->outertext) : false);
+
+            // Check preview ADV blacklist
+            if (! $isBlackList) {
+                // Controlla il currentElement
+                if (preg_match('/<span class="adv-preview"/', $currentElement->outertext)) {
+                    $isBlackList = true;
+                } else {
+                    // Controlla il beforeElement
+                    if ($beforeElement && preg_match('/<span class="adv-preview"/', $beforeElement->outertext)) {
+                        $isBlackList = true;
+                    }
+                }
+            }
             // === END BLACKLIST ===
 
             if (in_array($index, $thresholds)) {
