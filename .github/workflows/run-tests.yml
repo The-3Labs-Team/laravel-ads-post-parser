@@ -26,20 +26,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    strategy:
-      fail-fast: true
-      matrix:
-        include:
-          - php: '8.2'
-            laravel: '10.*'
-            testbench: '8.*'
-            stability: 'prefer-stable'
-          - php: '8.4'
-            laravel: '11.*'
-            testbench: '9.*'
-            stability: 'prefer-stable'
-
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+    name: P8.4 - L11.* - prefer-stable
 
     steps:
       - name: Checkout code
@@ -48,7 +35,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: '8.4'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
 
@@ -62,8 +49,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          composer require "laravel/framework:11.*" "orchestra/testbench:9.*" --no-interaction --no-update
+          composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: List Installed Dependencies
         run: composer show -D
