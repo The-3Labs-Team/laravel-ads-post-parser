@@ -5,6 +5,8 @@ namespace The3LabsTeam\AdsPostParser\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use The3LabsTeam\AdsPostParser\AdsPostParser;
+use voku\helper\HtmlDomParser;
 
 class AdsPostParserController extends Controller
 {
@@ -16,7 +18,7 @@ class AdsPostParserController extends Controller
         $rawHtml = $request->get('raw_html', '');
         $rawHtml = $this->parseShortcodesToHtml($rawHtml);
 
-        $parser = new \The3LabsTeam\AdsPostParser\AdsPostParser($rawHtml);
+        $parser = new AdsPostParser($rawHtml);
         $parsedHtml = $parser->appendAdvertising(customHtml: '<small>[ADV PREVIEW]</small>');
 
         $parsedHtml = $this->parseHtmlToShortcodes($parsedHtml);
@@ -55,7 +57,7 @@ class AdsPostParserController extends Controller
      */
     protected function parseHtmlToShortcodes(string $html): string
     {
-        $dom = \voku\helper\HtmlDomParser::str_get_html($html);
+        $dom = HtmlDomParser::str_get_html($html);
         $elements = $dom->find('[data-shortcode]');
 
         foreach ($elements as $element) {
