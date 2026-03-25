@@ -15,7 +15,7 @@ class AdsPostParserController extends Controller
      */
     public function getPreviewHtml(Request $request): JsonResponse
     {
-        $rawHtml = $request->get('raw_html', '');
+        $rawHtml = (string) $request->input('raw_html', '');
         $rawHtml = $this->parseShortcodesToHtml($rawHtml);
 
         $parser = new AdsPostParser($rawHtml);
