@@ -62,28 +62,28 @@ beforeEach(function () {
 
 });
 
-it('can append first and second advertising only paragraphs', function () {
+it('prepends the first two ads in paragraph-only content', function () {
     $content = (new AdsPostParser($this->contentOnlyParagraphs))->appendAdvertising();
 
     expect($content)
-        ->toContain('<p>Paragraph1</p><div>--- YOUR AD1 HERE ---</div>')
-        ->toContain('<p>Paragraph4</p><div>--- YOUR AD2 HERE ---</div>');
+        ->toMatch('/<div>--- YOUR AD1 HERE ---<\/div>\s*<p>Paragraph1<\/p>/')
+        ->toMatch('/<div>--- YOUR AD2 HERE ---<\/div>\s*<p>Paragraph4<\/p>/');
 });
 
-it('can append first and second advertising', function () {
+it('prepends the first two ads before the matched content nodes', function () {
     $content = (new AdsPostParser($this->content))->appendAdvertising();
 
     expect($content)
-        ->toContain("<p>Paragraph1</p>\n<div>--- YOUR AD1 HERE ---</div>")
-        ->toContain("<p>Paragraph7</p>\n<div>--- YOUR AD2 HERE ---</div>");
+        ->toMatch('/<div>--- YOUR AD1 HERE ---<\/div>\s*<p>Paragraph1<\/p>/')
+        ->toMatch('/<div>--- YOUR AD2 HERE ---<\/div>\s*<p>Paragraph8<\/p>/');
 });
 
-it('can append advertising in small content with specific position', function () {
+it('prepends ads in small content using the fallback thresholds', function () {
     $content = (new AdsPostParser($this->smallContent))->appendAdvertising();
 
     expect($content)
-        ->toContain("<p>Paragraph1</p>\n<div>--- YOUR AD1 HERE ---</div>")
-        ->toContain("<p>Paragraph4</p>\n<div>--- YOUR AD2 HERE ---</div>");
+        ->toMatch('/<div>--- YOUR AD1 HERE ---<\/div>\s*<p>Paragraph1<\/p>/')
+        ->toMatch('/<div>--- YOUR AD2 HERE ---<\/div>\s*<p>Paragraph5<\/p>/');
 });
 
 it('can append advertising', function () {
