@@ -26,7 +26,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    name: P8.4 - default stack
+    name: P8.4 - locked stack
 
     steps:
       - name: Checkout code
@@ -48,10 +48,7 @@ jobs:
         run: composer validate --no-check-publish
 
       - name: Install dependencies
-        run: composer update --prefer-stable --prefer-dist --no-interaction --no-security-blocking
-
-      - name: List Installed Dependencies
-        run: composer show -D
+        run: composer install --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: vendor/bin/pest --ci
+        run: php -d error_reporting=8191 vendor/bin/pest --ci
